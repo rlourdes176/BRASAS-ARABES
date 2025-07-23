@@ -710,8 +710,6 @@ export default function BrasasArabes() {
                       <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
-                        // Usar la query para generar la imagen
-                        query={item.query}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       {/* Precio en la esquina superior derecha de la imagen */}

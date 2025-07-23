@@ -30,7 +30,7 @@ const ArabicPattern = ({ className = "" }: { className?: string }) => (
   </div>
 )
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -43,18 +43,20 @@ export default function LoginPage() {
     setError("")
     setSuccess("")
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`, // URL a la que Supabase redirigirá después de la confirmación por correo
+      },
     })
 
-    if (signInError) {
-      setError(signInError.message)
+    if (signUpError) {
+      setError(signUpError.message)
     } else {
-      setSuccess("¡Inicio de sesión exitoso! Redirigiendo...")
-      // Redirige al usuario a la página principal o a un dashboard
-      router.push("/")
-      router.refresh() // Refresca la página para actualizar el estado de autenticación
+      setSuccess("¡Registro exitoso! Por favor, revisa tu correo electrónico para confirmar tu cuenta.")
+      // Opcional: redirigir al usuario a una página de confirmación o a la página de inicio de sesión
+      // router.push('/login');
     }
   }
 
@@ -69,11 +71,11 @@ export default function LoginPage() {
         style={{ background: "linear-gradient(135deg, #F8F1E7 0%, #E8D5C4 100%)" }}
       >
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold" style={{ color: "#8B0000" }}>
-            <User className="inline-block h-8 w-8 mr-2" /> Iniciar Sesión
+          <CardTitle className="text-3xl font-bold" style={{ color: "#B6862C" }}>
+            <User className="inline-block h-8 w-8 mr-2" /> Registrarse
           </CardTitle>
           <p className="text-sm" style={{ color: "#121212" }}>
-            Accede a tu cuenta de cliente
+            Crea tu cuenta de cliente
           </p>
         </CardHeader>
         <CardContent>
@@ -121,17 +123,14 @@ export default function LoginPage() {
                 background: "linear-gradient(135deg, #8B0000 0%, #A52A2A 100%)",
               }}
             >
-              Iniciar Sesión
+              Registrarse
             </Button>
           </form>
           <div className="mt-6 text-center">
-            <Link href="#" className="text-[#8B0000] hover:underline font-semibold">
-              ¿Olvidaste tu contraseña?
-            </Link>
             <p className="mt-2 text-sm" style={{ color: "#121212" }}>
-              ¿No tienes cuenta?{" "}
-              <Link href="/signup" className="text-[#B6862C] hover:underline font-semibold">
-                Regístrate aquí
+              ¿Ya tienes cuenta?{" "}
+              <Link href="/login" className="text-[#B6862C] hover:underline font-semibold">
+                Inicia sesión aquí
               </Link>
             </p>
           </div>
